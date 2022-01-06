@@ -13,23 +13,12 @@ past_tweets = {}
 # Code to run when starting the program
 @client.event
 async def on_ready():
+    start_monitor()
     webhook = DiscordWebhook(url='https://discord.com/api/webhooks/927918925130391573/6Iwyo63_7lFJ2s8y1Rjsy9Tu29OduJnfu_YQIWHaNQMNZiFcqcL7DEPoioLgoSGI56uf')
     embed = DiscordEmbed(title="Twitter Monitor", description="Pynnie Bot is now online!", color=0xe4ede0)
     webhook.add_embed(embed)
     webhook.execute()
     print('{0.user} is now online!'.format(client))
-
-# Command to start the monitor
-# Use: '/start'
-@client.command()
-async def start(ctx):
-    start_monitor()
-
-# Command to stop monitoring a user
-# Use: '/stop username'
-@client.command()
-async def stop(ctx, arg):
-    stop_monitoring(arg)
 
 # Command to add a user to monitor
 # Use: '/add username'
@@ -37,6 +26,12 @@ async def stop(ctx, arg):
 async def add(ctx, arg):
     userList.append(arg)
     started_monitoring(arg)
+
+# Command to stop monitoring a user
+# Use: '/remove username'
+@client.command()
+async def remove(ctx, arg):
+    stop_monitoring(arg)
 
 # Sends an embed when start monitoring a user
 def started_monitoring(user):
