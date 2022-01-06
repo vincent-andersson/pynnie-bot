@@ -1,12 +1,11 @@
 from tweepy import API
 from tweepy import Cursor
 from tweepy.streaming import StreamListener
-from tweepy import OAuthHandler, auth
+from tweepy import OAuthHandler
 from tweepy import Stream
 from dotenv import load_dotenv
 
 import os
-import numpy as np
 import pandas as pd
 
 class TwitterClient():
@@ -88,31 +87,3 @@ class TweetAnalyzer():
     def tweets_to_dataframe(self, tweets):
         df = pd.DataFrame(data=[tweet.text for tweet in tweets], columns=['Tweets'])
         return df
-
-# if __name__ == "__main__":
-#     twitter_client = TwitterClient()
-#     tweet_analyzer = TweetAnalyzer()
-
-#     api = twitter_client.get_twitter_client_api()
-
-#     past_tweets = {}
-#     while True:
-#         tweets = api.user_timeline(screen_name="vhartono11", count=1)
-        
-#         if tweets[0].id not in past_tweets.keys():
-#             print(tweets[0].text)
-#             past_tweets[tweets[0].id] = tweets[0].text
-            
-        # df = tweet_analyzer.tweets_to_dataframe(tweets)
-        # print(df.head(1))
-
-    # # authenticate using config.py and connect to Twitter Streaming API
-    # fetched_tweets_filename = "tweets.json"
-    # hashtag_list = ['elon musk', 'jeff bezos', 'gary vee', 'otto suwen']
-    
-    # twitter_client = TwitterClient('vhartono11')
-    # new_tweet = twitter_client.get_user_timeline_tweets(1)
-    # print(new_tweet)
-
-    # twitter_streamer = TwitterStreamer()
-    # twitter_streamer.stream_tweets(fetched_tweets_filename, hashtag_list)

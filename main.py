@@ -10,6 +10,7 @@ client = commands.Bot(command_prefix='/')
 userList = []
 past_tweets = {}
 
+# Code to run when starting the program
 @client.event
 async def on_ready():
     webhook = DiscordWebhook(url='https://discord.com/api/webhooks/927918925130391573/6Iwyo63_7lFJ2s8y1Rjsy9Tu29OduJnfu_YQIWHaNQMNZiFcqcL7DEPoioLgoSGI56uf')
@@ -18,19 +19,26 @@ async def on_ready():
     webhook.execute()
     print('{0.user} is now online!'.format(client))
 
+# Command to start the monitor
+# Use: '/start'
 @client.command()
 async def start(ctx):
     start_monitor()
 
+# Command to stop monitoring a user
+# Use: '/stop username'
 @client.command()
 async def stop(ctx, arg):
     stop_monitoring(arg)
 
+# Command to add a user to monitor
+# Use: '/add username'
 @client.command()
 async def add(ctx, arg):
     userList.append(arg)
     started_monitoring(arg)
 
+# Sends an embed when start monitoring a user
 def started_monitoring(user):
     webhook = DiscordWebhook(url='https://discord.com/api/webhooks/927918925130391573/6Iwyo63_7lFJ2s8y1Rjsy9Tu29OduJnfu_YQIWHaNQMNZiFcqcL7DEPoioLgoSGI56uf')
     startEmbed = DiscordEmbed(title="Twitter Monitor", description="Started monitoring {}".format(user), color=0x58d763)
@@ -38,6 +46,7 @@ def started_monitoring(user):
     webhook.execute()
     print('Started monitoring {}'.format(user))
 
+# Sends an embed when a new tweet is found
 def send_tweet(tweet):
     webhook = DiscordWebhook(url='https://discord.com/api/webhooks/927918925130391573/6Iwyo63_7lFJ2s8y1Rjsy9Tu29OduJnfu_YQIWHaNQMNZiFcqcL7DEPoioLgoSGI56uf')
     url = 'https://twitter.com/twitter/statuses/' + tweet.id_str
@@ -45,6 +54,7 @@ def send_tweet(tweet):
     webhook.add_embed(tweetEmbed)
     webhook.execute()
 
+# Sends an embed when stop monitoring a user
 def stop_monitoring(user):
     userList.remove(user)
     webhook = DiscordWebhook(url='https://discord.com/api/webhooks/927918925130391573/6Iwyo63_7lFJ2s8y1Rjsy9Tu29OduJnfu_YQIWHaNQMNZiFcqcL7DEPoioLgoSGI56uf')
@@ -53,6 +63,7 @@ def stop_monitoring(user):
     webhook.execute()
     print('Stopped monitoring {}'.format(user))
 
+# Checks every second if there's a new tweet from the added users
 @tasks.loop(seconds=1.0)
 async def check_users(api):
     for user in userList:
@@ -64,11 +75,13 @@ async def check_users(api):
                 send_tweet(tweets[0])
                 past_tweets[tweets[0].id] = tweets[0].text
 
+# Loads the monitor
 def start_monitor():
     twitter_client = TwitterClient()
     api = twitter_client.get_twitter_client_api()
     check_users.start(api)
 
+# Main function controls all the action
 if __name__ == "__main__":
     load_dotenv()
     client.run(os.getenv('TOKEN'))
