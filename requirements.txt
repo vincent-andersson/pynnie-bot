@@ -2,3 +2,5 @@ discord
 discord_webhook
 tweepy==3.10.0
 python-dotenv
+os
+pandas
