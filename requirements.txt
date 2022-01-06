@@ -1,3 +1,4 @@
 discord
 discord_webhook
 tweepy
+python-dotenv
