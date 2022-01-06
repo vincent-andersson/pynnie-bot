@@ -15,7 +15,7 @@ past_tweets = {}
 async def on_ready():
     start_monitor()
     webhook = DiscordWebhook(url='https://discord.com/api/webhooks/927918925130391573/6Iwyo63_7lFJ2s8y1Rjsy9Tu29OduJnfu_YQIWHaNQMNZiFcqcL7DEPoioLgoSGI56uf')
-    embed = DiscordEmbed(title="Twitter Monitor", description="Pynnie Bot is now online!", color=0xe4ede0)
+    embed = DiscordEmbed(title="Pynnie Bot is Now Online!", color=0xe4ede0)
     webhook.add_embed(embed)
     webhook.execute()
     print('{0.user} is now online!'.format(client))
@@ -33,6 +33,8 @@ async def add(ctx, arg):
 async def remove(ctx, arg):
     stop_monitoring(arg)
 
+# Command to check list of users currently being monitored
+# Use: '/userlist'
 @client.command()
 async def userlist(ctx):
     check_userlist()
@@ -40,7 +42,7 @@ async def userlist(ctx):
 # Sends an embed when start monitoring a user
 def started_monitoring(user):
     webhook = DiscordWebhook(url='https://discord.com/api/webhooks/927918925130391573/6Iwyo63_7lFJ2s8y1Rjsy9Tu29OduJnfu_YQIWHaNQMNZiFcqcL7DEPoioLgoSGI56uf')
-    startEmbed = DiscordEmbed(title="Twitter Monitor", description="Started monitoring {}".format(user), color=0x58d763)
+    startEmbed = DiscordEmbed(title="Started monitoring {}".format(user), color=0x58d763)
     webhook.add_embed(startEmbed)
     webhook.execute()
     print('Started monitoring {}'.format(user))
@@ -57,7 +59,7 @@ def send_tweet(tweet):
 def stop_monitoring(user):
     userList.remove(user)
     webhook = DiscordWebhook(url='https://discord.com/api/webhooks/927918925130391573/6Iwyo63_7lFJ2s8y1Rjsy9Tu29OduJnfu_YQIWHaNQMNZiFcqcL7DEPoioLgoSGI56uf')
-    stopEmbed = DiscordEmbed(title="Twitter Monitor", description="Stopped monitoring {}".format(user), color=0xFF0000)
+    stopEmbed = DiscordEmbed(title="Stopped Monitoring {}".format(user), color=0xFF0000)
     webhook.add_embed(stopEmbed)
     webhook.execute()
     print('Stopped monitoring {}'.format(user))
@@ -65,9 +67,14 @@ def stop_monitoring(user):
 # Sends an embed to see the list of users that are being monitored
 def check_userlist():
     webhook = DiscordWebhook(url='https://discord.com/api/webhooks/927918925130391573/6Iwyo63_7lFJ2s8y1Rjsy9Tu29OduJnfu_YQIWHaNQMNZiFcqcL7DEPoioLgoSGI56uf')
-    userlistEmbed = DiscordEmbed(title="Twitter Monitor", description="\n".join(userList), color=0xFAFAD2)
-    webhook.add_embed(userlistEmbed)
-    webhook.execute()
+    if len(userList) > 0:
+        userlistEmbed = DiscordEmbed(title="Accounts Currently in Monitor", description="\n".join(userList), color=0xFAFAD2)
+        webhook.add_embed(userlistEmbed)
+        webhook.execute()
+    else:
+        userlistEmbed = DiscordEmbed(title="Accounts Currently in Monitor", description="There are currently no accounts being monitored", color=0xFAFAD2)
+        webhook.add_embed(userlistEmbed)
+        webhook.execute()
     print('Displayed list of users')
 
 # Checks every second if there's a new tweet from the added users

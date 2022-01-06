@@ -11,7 +11,7 @@ import pandas as pd
 class TwitterClient():
     def __init__(self, twitter_user=None):
         self.auth = TwitterAuthenticator().authenticate_twitter_app()
-        self.twitter_client = API(self.auth)
+        self.twitter_client = API(self.auth, wait_on_rate_limit=True)
 
         self.twitter_user = twitter_user
 
