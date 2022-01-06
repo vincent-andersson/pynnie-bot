@@ -33,6 +33,10 @@ async def add(ctx, arg):
 async def remove(ctx, arg):
     stop_monitoring(arg)
 
+@client.command()
+async def userlist(ctx):
+    check_userlist()
+
 # Sends an embed when start monitoring a user
 def started_monitoring(user):
     webhook = DiscordWebhook(url='https://discord.com/api/webhooks/927918925130391573/6Iwyo63_7lFJ2s8y1Rjsy9Tu29OduJnfu_YQIWHaNQMNZiFcqcL7DEPoioLgoSGI56uf')
@@ -57,6 +61,14 @@ def stop_monitoring(user):
     webhook.add_embed(stopEmbed)
     webhook.execute()
     print('Stopped monitoring {}'.format(user))
+
+# Sends an embed to see the list of users that are being monitored
+def check_userlist():
+    webhook = DiscordWebhook(url='https://discord.com/api/webhooks/927918925130391573/6Iwyo63_7lFJ2s8y1Rjsy9Tu29OduJnfu_YQIWHaNQMNZiFcqcL7DEPoioLgoSGI56uf')
+    userlistEmbed = DiscordEmbed(title="Twitter Monitor", description="\n".join(userList), color=0xFAFAD2)
+    webhook.add_embed(userlistEmbed)
+    webhook.execute()
+    print('Displayed list of users')
 
 # Checks every second if there's a new tweet from the added users
 @tasks.loop(seconds=1.0)
