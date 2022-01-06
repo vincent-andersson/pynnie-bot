@@ -1,0 +1,5 @@
+discord
+discord.ext
+dotenv
+discord_webhook
+tweepy
