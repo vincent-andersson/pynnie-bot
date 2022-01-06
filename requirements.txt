@@ -1,4 +1,3 @@
 discord
-dotenv
 discord_webhook
 tweepy
