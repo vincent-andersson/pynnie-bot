@@ -41,7 +41,7 @@ async def userlist(ctx):
 
 # Sends an embed when start monitoring a user
 def started_monitoring(user):
-    webhook = DiscordWebhook(url='https://discord.com/api/webhooks/927918925130391573/6Iwyo63_7lFJ2s8y1Rjsy9Tu29OduJnfu_YQIWHaNQMNZiFcqcL7DEPoioLgoSGI56uf')
+    webhook = DiscordWebhook(url=os.getenv('WEBHOOK_URL'))
     startEmbed = DiscordEmbed(title="Started monitoring {}".format(user), color=0x58d763)
     webhook.add_embed(startEmbed)
     webhook.execute()
@@ -49,7 +49,7 @@ def started_monitoring(user):
 
 # Sends an embed when a new tweet is found
 def send_tweet(tweet):
-    webhook = DiscordWebhook(url='https://discord.com/api/webhooks/927918925130391573/6Iwyo63_7lFJ2s8y1Rjsy9Tu29OduJnfu_YQIWHaNQMNZiFcqcL7DEPoioLgoSGI56uf')
+    webhook = DiscordWebhook(url=os.getenv('WEBHOOK_URL'))
     url = 'https://twitter.com/twitter/statuses/' + tweet.id_str
     tweetEmbed = DiscordEmbed(title="New Tweet by {}".format(tweet.user.screen_name), description=tweet.text, url=url, color=0x00ACEE)
     webhook.add_embed(tweetEmbed)
@@ -58,7 +58,7 @@ def send_tweet(tweet):
 # Sends an embed when stop monitoring a user
 def stop_monitoring(user):
     userList.remove(user)
-    webhook = DiscordWebhook(url='https://discord.com/api/webhooks/927918925130391573/6Iwyo63_7lFJ2s8y1Rjsy9Tu29OduJnfu_YQIWHaNQMNZiFcqcL7DEPoioLgoSGI56uf')
+    webhook = DiscordWebhook(url=os.getenv('WEBHOOK_URL'))
     stopEmbed = DiscordEmbed(title="Stopped Monitoring {}".format(user), color=0xFF0000)
     webhook.add_embed(stopEmbed)
     webhook.execute()
@@ -66,7 +66,7 @@ def stop_monitoring(user):
 
 # Sends an embed to see the list of users that are being monitored
 def check_userlist():
-    webhook = DiscordWebhook(url='https://discord.com/api/webhooks/927918925130391573/6Iwyo63_7lFJ2s8y1Rjsy9Tu29OduJnfu_YQIWHaNQMNZiFcqcL7DEPoioLgoSGI56uf')
+    webhook = DiscordWebhook(url=os.getenv('WEBHOOK_URL'))
     if len(userList) > 0:
         userlistEmbed = DiscordEmbed(title="Accounts Currently in Monitor", description="\n".join(userList), color=0xFAFAD2)
         webhook.add_embed(userlistEmbed)
