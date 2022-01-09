@@ -14,7 +14,7 @@ past_tweets = {}
 @client.event
 async def on_ready():
     start_monitor()
-    webhook = DiscordWebhook(url='https://discord.com/api/webhooks/927918925130391573/6Iwyo63_7lFJ2s8y1Rjsy9Tu29OduJnfu_YQIWHaNQMNZiFcqcL7DEPoioLgoSGI56uf')
+    webhook = DiscordWebhook(url=os.getenv('WEBHOOK_URL'))
     embed = DiscordEmbed(title="Pynnie Bot is Now Online!", color=0xe4ede0)
     webhook.add_embed(embed)
     webhook.execute()
